@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang Nhân Viên</title>
+  <style>
+	/* Định dạng tổng quát */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+h2, h3 {
+  color: #555;
+}
+
+/* Định dạng menu */
+.menu {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.menu button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.menu button:hover {
+  background-color: #45a049;
+}
+
+/* Định dạng các section */
+.content-section {
+  display: none;
+  margin-top: 20px;
+}
+
+.content-section h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+input[type="text"], input[type="number"], select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/* Định dạng bảng */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+/* Định dạng form điểm thưởng */
+.reward-form {
+  margin-top: 20px;
+}
+
+#redeem-response {
+  font-size: 16px;
+  color: #4CAF50;
+}
+
+/* Mobile-friendly responsive design */
+@media (max-width: 768px) {
+  .container {
+      padding: 15px;
+  }
+
+  .menu button {
+      width: 100%;
+      margin: 10px 0;
+  }
+
+  input[type="text"], input[type="number"], select, textarea {
+      width: 100%;
+  }
+
+  table, table th, table td {
+      display: block;
+      width: 100%;
+  }
+
+  table th {
+      background-color: transparent;
+      font-weight: normal;
+  }
+
+  table th, table td {
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+  }
+
+  table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-left: 15px;
+      font-weight: bold;
+      text-align: left;
+  }
+}
+	
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="home-page">
+      <h1>Trang Nhân Viên</h1>
+      <div class="menu">
+        <button onclick="showSection('profile-section')">Hồ Sơ Cá Nhân</button>
+        <button onclick="showSection('request-section')">Gửi Yêu Cầu</button>
+        <button onclick="showSection('activity-section')">Xem Hoạt Động</button>
+        <button onclick="showSection('reward-section')">Điểm Thưởng</button>
+      </div>
+    </div>
+	
+    <!-- Hồ sơ cá nhân -->
+	<div id="profile-section" class="content-section" style="display:none;">
+	    <h2>Thông Tin Cá Nhân</h2>
+	
+	    <form id="edit-profile-form" action="/NhanVien/Update" method="POST">
+	        <label for="employee-name">Họ tên:</label>
+			<input type="hidden" id="userid" name="userid" th:value="${userid}" required>
+			
+	        <input type="text" id="employee-name" name="name" th:value="${UserProfile.name}" required>
+	    
+	        <label for="employee-id">Căn cước:</label>
+	        <input type="text" id="employee-cancuoc" name="cancuoc" th:value="${UserProfile.cancuoc}" required>
+	    
+	        <label for="employee-tax">Mã số thuế:</label>
+	        <input type="text" id="employee-tax" name="mst" th:value="${UserProfile.mst}" required>
+	    
+	        <label for="employee-address">Địa chỉ:</label>
+	        <input type="text" id="employee-address" name="address" th:value="${UserProfile.address}" required>
+	    
+	        <label for="employee-phone">Điện thoại:</label>
+	        <input type="text" id="employee-phone" name="phone" th:value="${UserProfile.phone}" required>
+	    	
+			<label for="employee-email">Email:</label>
+		  <input type="text" id="employee-email" name="email" th:value="${UserProfile.email}" required>
+		  
+	        <label for="employee-bank">Số tài khoản ngân hàng:</label>
+	        <input type="text" id="employee-bank" name="bank" th:value="${UserProfile.bank}" required>
+			
+			<label for="employee-bank_name">Tên ngân hàng:</label>
+			 <input type="text" id="employee-bank_name" name="bank_name" th:value="${UserProfile.bank_name}" required>
+			 <label for="employee-username">Username:</label>
+			 <input type="text" id="employee-username" name="username" th:value="${UserProfile.username}" required>
+			 <label for="employee-password">Password:</label>
+			 <input type="text" id="employee-username" name="password" th:value="${UserProfile.password}" required>
+	    
+	        <button type="submit">Cập nhật</button>
+	    </form>
+	</div>
+
+    <!-- Gửi yêu cầu -->
+	<div id="request-section" class="content-section">
+	    <h2>Gửi Yêu Cầu</h2>
+	    
+	    <!-- Form gửi yêu cầu -->
+	    <form id="employee-request-form">
+	        <input type="hidden" id="userid" name="userid" th:value="${userid}" required>
+	        
+	        <label for="reason">Yêu cầu:</label>
+	        <textarea id="reason" name="details" placeholder="Nhập yêu cầu..."></textarea>
+
+	        <button type="button" onclick="submitRequest()">Gửi yêu cầu</button>
+	    </form>
+
+	    <div id="message"></div>
+
+	    <h2>Danh sách yêu cầu</h2>
+	    
+	    <!-- Bảng danh sách yêu cầu sẽ được cập nhật qua API -->
+	    <table border="1">
+	        <thead>
+	            <tr>
+	                <th>Yêu cầu</th>
+	                <th>Trạng thái</th>
+	            </tr>
+	        </thead>
+	        <tbody id="request-list">
+	            <!-- Dữ liệu danh sách yêu cầu sẽ được chèn vào đây qua JavaScript -->
+	        </tbody>
+	    </table>
+	</div>
+
+    <!-- Hoạt động cá nhân -->
+    <div id="activity-section" class="content-section" style="display:none;">
+      <h2>Hoạt Động Của Bạn</h2>
+      
+	  <table>
+        <tr>
+          <th>distance</th>
+          <th>movingTime</th>
+          <th>totalDistance</th>
+		  <th>startTime</th>
+		  <th>endTime</th>
+        </tr>
+		<tr th:each="profile : ${listHD}">
+            <td th:text="${profile.distance}"></td>
+            <td th:text="${profile.movingTime}"></td>
+            <td th:text="${profile.totalDistance}"></td>
+            <td th:text="${profile.startTime}"></td>
+            <td th:text="${profile.endTime}"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Điểm thưởng và quy đổi -->
+    <div id="reward-section" class="content-section" style="display:none;">
+      <h2>Điểm Thưởng Của Bạn</h2>
+      <h3>Điểm thưởng hiện tại: <span id="current-points" th:text="${PointProfile.diemThuong}"></span> points</h3>
+      <div class="reward-form">
+        <h3>Quy đổi điểm thưởng ra voucher</h3>
+		<form id="redeem-form" action="/NhanVien/Doithuong" method="post" onsubmit="return validateForm()">
+		    <input type="hidden" id="userid" name="idnv" th:value="${userid}" required>
+		    
+		    <label for="gift-card">Chọn thẻ quà tặng URBOX GIFT:</label>
+		    <select id="gift-card" name="idgift" required onchange="updateGiftDetails()">
+		        <option value="" disabled selected>Chọn thẻ quà tặng</option>
+		        <option th:each="gift : ${giftDetails}"
+		                th:value="${gift.id}"
+		               
+		                th:text="${gift.brandName + ' - ' + gift.name + ' (' + gift.price + ' points)'}">
+		        </option>
+		    </select>
+		    
+		    <input type="hidden" id="gift-name" name="namegift">
+		    <input type="hidden" id="gift-points" name="points">
+		    
+		    <button type="submit">Quy đổi</button>
+		</form>
+		
+        <div id="redeem-response" style="margin-top: 20px;"></div>
+      </div>
+
+      <div id="redeemed-gift-cards" style="margin-top: 40px;">
+        <h3>Thẻ Quà Tặng Đã Quy Đổi</h3>
+		<ul id="gift-card-list">
+		      <li th:each="item : ${listDoiThuong}">
+		          <span th:text="${item.nameGift}"></span> - 
+		          <span th:text="${item.point} + ' points'"></span>
+		      </li>
+		  </ul>
+      </div>
+    </div>
+
+  <script>
+//Example employee data (this could be fetched from a server in a real scenario)
+  const employeeData = {
+    name: "Nguyễn Văn A",
+    id: "0123456789",
+    tax: "123456789",
+    address: "123 Đường ABC, Quận 1",
+    phone: "0987654321",
+    bank: "1234567890",
+    points: 100,
+    activity: {
+        campaign: "Chiến dịch chạy bộ",
+        distance: "20 km",
+        time: "120 phút"
+    }
+  };
+
+  // Function to show the selected section and hide others
+  function showSection(sectionId) {
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(section => section.style.display = 'none');
+
+    const selectedSection = document.getElementById(sectionId);
+    selectedSection.style.display = 'block';
+
+    // Populate content based on the section
+    switch (sectionId) {
+        case 'profile-section':
+            //populateProfile();
+            break;
+        case 'request-section':
+            populateRequests();
+            break;
+        case 'activity-section':
+            populateActivity();
+            break;
+        case 'reward-section':
+            //populateRewards();
+            break;
+    }
+  }
+
+  // Populate profile section with employee data
+ /* function populateProfile() {
+    document.getElementById('employee-name').value = employeeData.name;
+    document.getElementById('employee-id').value = employeeData.id;
+    document.getElementById('employee-tax').value = employeeData.tax;
+    document.getElementById('employee-address').value = employeeData.address;
+    document.getElementById('employee-phone').value = employeeData.phone;
+    document.getElementById('employee-bank').value = employeeData.bank;
+  }*/
+
+  // Populate requests section (No need to rewrite the HTML since the form is static)
+  function populateRequests() {
+    // You can add any logic here if you want to pre-populate fields or modify the request form
+  }
+
+  // Populate activity section with employee activity data
+  function populateActivity() {
+    document.querySelector('#activity-section h3').innerText = employeeData.activity.campaign;
+    document.querySelector('#activity-section p').innerText = `Tổng số km: ${employeeData.activity.distance}, Tổng thời gian: ${employeeData.activity.time}`;
+  }
+
+  // Populate rewards section with points and redemption form
+  function populateRewards() {
+    document.getElementById('current-points').innerText = employeeData.points;
+  }
+
+  // Event listener for the request form submission
+  document.addEventListener('submit', function (event) {
+    if (event.target && event.target.id === 'employee-request-form') {
+        event.preventDefault();
+
+        // Simulate sending request to database
+        alert('Yêu cầu của bạn đã được gửi thành công!');
+    }
+  });
+  function updateGiftDetails() {
+      const giftCardSelect = document.getElementById("gift-card");
+      const selectedOption = giftCardSelect.options[giftCardSelect.selectedIndex];
+      const text = selectedOption.text;
+
+      // Extract name and points from text
+     const match = text.match(/(?:.* - )(.+?) \((\d+) points\)/);
+      if (match) {
+          const giftName = match[1];
+          const giftPoints = match[2];
+
+          // Update hidden inputs
+          document.getElementById("gift-name").value = giftName;
+          document.getElementById("gift-points").value = giftPoints;
+
+      }
+  }
+  
+  function validateForm() {
+      const giftName = document.getElementById("gift-name").value;
+      const giftPoints = document.getElementById("gift-points").value;
+
+      if (!giftName || !giftPoints) {
+          alert("Please select a valid gift card.");
+          return false;
+      }
+      return true;
+  }
+  
+  async function submitRequest() {
+         const userId = document.getElementById('userid').value;
+         const requestDetails = document.getElementById('reason').value;
+         const messageDiv = document.getElementById('message');
+
+         try {
+             const response = await fetch('http://localhost:8765/request-service/api/requests/create', {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                     'UserId': userId
+                 },
+                 body: JSON.stringify({ details: requestDetails })
+             });
+
+             if (response.ok) {
+                 const result = await response.text();
+                 messageDiv.innerHTML = `<span style="color: green;">${result}</span>`;
+                 fetchRequestList();  // Gọi lại danh sách yêu cầu sau khi gửi thành công
+             } else {
+                 const errorMessage = await response.text();
+                 messageDiv.innerHTML = `<span style="color: red;">Error: ${errorMessage}</span>`;
+             }
+         } catch (error) {
+             console.error("Error during API call:", error);
+             messageDiv.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
+         }
+     }
+
+     // Hàm gọi API để lấy danh sách yêu cầu
+     async function fetchRequestList() {
+         const userId = document.getElementById('userid').value;
+         const requestList = document.getElementById('request-list');
+
+         try {
+             const response = await fetch(`http://localhost:8765/request-service/api/requests/user/${userId}`, {
+                 method: 'GET',
+                 headers: {
+                     'Content-Type': 'application/json'
+                 }
+             });
+
+             if (response.ok) {
+                 const requests = await response.json();
+                 
+                 // Xóa danh sách cũ trước khi cập nhật
+                 requestList.innerHTML = '';
+
+                 // Hiển thị từng yêu cầu trong bảng
+                 requests.forEach(request => {
+                     const row = document.createElement('tr');
+                     
+                     // Tạo cột "Yêu cầu"
+                     const detailsCell = document.createElement('td');
+                     detailsCell.textContent = request.details;
+                     row.appendChild(detailsCell);
+
+                     // Tạo cột "Trạng thái"
+                     const statusCell = document.createElement('td');
+                     if (request.approved === 1) {
+                         statusCell.textContent = 'Đã duyệt';
+                         statusCell.style.color = 'green';
+                     } else if (request.approved === 0) {
+                         statusCell.textContent = 'Từ chối';
+                         statusCell.style.color = 'red';
+                     } else {
+                         statusCell.textContent = 'Chờ duyệt';
+                         statusCell.style.color = 'yellow';
+                     }
+                     row.appendChild(statusCell);
+
+                     requestList.appendChild(row);  // Thêm dòng vào bảng
+                 });
+             } else {
+                 requestList.innerHTML = '<tr><td colspan="2">Không thể tải danh sách yêu cầu.</td></tr>';
+             }
+         } catch (error) {
+             console.error("Error fetching request list:", error);
+             requestList.innerHTML = '<tr><td colspan="2">Error fetching requests.</td></tr>';
+         }
+     }
+
+     // Gọi hàm fetchRequestList khi trang được tải
+     document.addEventListener('DOMContentLoaded', fetchRequestList);
+  </script>
+</body>
+</html>
